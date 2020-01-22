@@ -1,29 +1,30 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 
 class DishDetail extends Component {
 
     constructor(props) {
         super(props);
-  
+
         this.state = {
             selectedDish: null
         }
     }
-  
+
     renderDish(dish) {
+        console.log('Dish: ', dish)
         if (dish != null)
-            return(
+            return (
                 <Card>
                     <CardImg top src={dish.image} alt={dish.name} />
                     <CardBody>
-                      <CardTitle>{dish.name}</CardTitle>
-                      <CardText>{dish.description}</CardText>
+                        <CardTitle>{dish.name}</CardTitle>
+                        <CardText>{dish.description}</CardText>
                     </CardBody>
                 </Card>
             );
         else
-            return(
+            return (
                 <div></div>
             );
     }
@@ -33,13 +34,14 @@ class DishDetail extends Component {
         if (dish != null) {
             const dispayedComments = dish.comments.map((comment) => {
                 return (
-                        <p>
-                            {comment.comment}<br/>
-                            {comment.author} - {comment.date}
-                        </p>
+                    <p key={comment.id}>
+                        {comment.comment}<br />
+                        {comment.author} - {new Intl.DateTimeFormat('pt-BR', { year: 'numeric', month: 'short', 
+                                day: '2-digit' }).format(new Date(Date.parse(comment.date)))}
+                    </p>
                 );
             });
-            return(
+            return (
                 <div>
                     <h4>Comments</h4>
                     <div>{dispayedComments}</div>
@@ -47,24 +49,24 @@ class DishDetail extends Component {
             );
         }
         else
-            return(
+            return (
                 <div></div>
             );
-    }    
-  
+    }
+
     render() {
 
-  
+
         return (
             <div className="row">
-                <div className="col-12 col-md-5 m-1">
+                <div key='dishDetailDescription' className="col-12 col-md-5 m-1">
                     {this.renderDish(this.props.selectedDish)}
                 </div>
-                <div className="col-12 col-md-5 m-1">
+                <div key='dishDetailComments' className="col-12 col-md-5 m-1">
                     {this.renderComments(this.props.selectedDish)}
                 </div>
             </div>
         );
     }
-  }
-  export default DishDetail;
+}
+export default DishDetail;
